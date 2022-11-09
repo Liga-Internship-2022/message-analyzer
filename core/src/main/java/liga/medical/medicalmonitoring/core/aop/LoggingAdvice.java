@@ -45,7 +45,7 @@ public class LoggingAdvice {
             object = pjp.proceed();
         } catch (Throwable throwable) {
             throwable.printStackTrace();
-            loggingService.logException(logMessage, SystemType.MESSAGE_ANALYZER);
+            loggingService.logRestException(logMessage, SystemType.MESSAGE_ANALYZER);
         }
         return object;
     }

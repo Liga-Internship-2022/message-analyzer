@@ -25,6 +25,6 @@ public class RabbitSenderServiceImpl implements RabbitSenderService {
         String messageAsJson = objectMapper.writeValueAsString(messageDto);
         amqpTemplate.convertAndSend(queue, messageAsJson);
 
-        loggingService.logQueueMessage(messageDto, queue, SystemType.MESSAGE_ANALYZER);
+        loggingService.logQueueMessageSending(messageDto, queue, SystemType.MESSAGE_ANALYZER);
     }
 }
