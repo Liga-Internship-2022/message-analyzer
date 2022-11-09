@@ -3,16 +3,18 @@ package liga.medical.medicalmonitoring.core.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import liga.medical.medicalmonitoring.api.RabbitSenderService;
+import liga.medical.service.LoggingService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import model.RabbitMessageDto;
+import model.SystemType;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
-@Slf4j
 @RequiredArgsConstructor
 public class RabbitSenderServiceImpl implements RabbitSenderService {
+
+    private final LoggingService loggingService;
 
     private final AmqpTemplate amqpTemplate;
 
@@ -22,6 +24,7 @@ public class RabbitSenderServiceImpl implements RabbitSenderService {
     public void sendMessage(RabbitMessageDto messageDto, String queue) throws JsonProcessingException {
         String messageAsJson = objectMapper.writeValueAsString(messageDto);
         amqpTemplate.convertAndSend(queue, messageAsJson);
-        log.info("Сообщение [{}] отправлено в очередь [{}]", messageAsJson, queue);
+
+        loggingService.logQueueMessage(messageDto, queue, SystemType.MESSAGE_ANALYZER);
     }
 }

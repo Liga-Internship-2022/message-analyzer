@@ -2,6 +2,7 @@ package liga.medical.medicalmonitoring.core.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import liga.medical.medicalmonitoring.api.RabbitSenderService;
+import liga.medical.medicalmonitoring.core.aop.annotations.DbLog;
 import liga.medical.medicalmonitoring.core.config.RabbitConfig;
 import lombok.RequiredArgsConstructor;
 import model.RabbitMessageDto;
@@ -17,6 +18,7 @@ public class RabbitController {
 
     private final RabbitSenderService rabbitSenderService;
 
+    @DbLog
     @PostMapping("/send")
     public void sendMessage(@RequestBody RabbitMessageDto message) throws JsonProcessingException {
         rabbitSenderService.sendMessage(message, RabbitConfig.ROUTER_QUEUE_NAME);
